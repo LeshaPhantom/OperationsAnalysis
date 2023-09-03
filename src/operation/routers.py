@@ -25,3 +25,29 @@ async def post_operation(new_operation: OperationSchema, session: Annotated[Asyn
     await session.execute(stmt)
     await session.commit()
     return {"status": "success"}
+
+new_operation_insert = {'id': 1,
+                        'data_time_operation': 'string',
+                        'data_payment': 'string',
+                        'card_number': 'str',
+                        'status_operation': True,
+                        'sum_operation': 'string',
+                        'currency_operation': 'string',
+                        'sum_payment': 'string',
+                        'currency_payment': 'string',
+                        'cashback': 0,
+                        'category': 'string',
+                        'mss': 0,
+                        'description': 'string',
+                        'bonus_cashback': 'string',
+                        'rounding_invest': 'string',
+                        'rounding_operation': 0
+                        }
+
+@router.post("/")
+async def post_operation_csv(session: Annotated[AsyncSession, Depends(get_async_session)]):
+    stmt = insert(Operation).values(**new_operation_insert)
+    print(stmt)
+    await session.execute(stmt)
+    await session.commit()
+    return {"status": "success"}
