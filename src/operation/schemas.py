@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-class OperationReadSchema(BaseModel):
+class OperationSchema(BaseModel):
     id: int
     data_time_operation: str
     data_payment: str
@@ -17,13 +17,6 @@ class OperationReadSchema(BaseModel):
     bonus_cashback: str
     rounding_invest: str
     rounding_operation: int
-
-    class Config:
-        from_attributes = True
-
-class MytestSchema(BaseModel):
-    id: int
-    name: int
 
     class Config:
         from_attributes = True

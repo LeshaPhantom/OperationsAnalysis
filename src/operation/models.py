@@ -3,10 +3,9 @@ from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 
-from src.operation.schemas import MytestSchema, OperationReadSchema
+from src.operation.schemas import OperationSchema
 
 metadata = MetaData()
-# declarative base class
 class Base(DeclarativeBase):
     metadata = metadata
 
@@ -63,8 +62,9 @@ class Operation(Base):
     rounding_operation: Mapped[int]
     # Сумма операции с округлением
 
-    def to_read_model(self) -> OperationReadSchema:
-        return OperationReadSchema(
+    def to_read_model(self) -> OperationSchema:
+        return OperationSchema(
+            id=self.id,
             data_time_operation=self.data_time_operation,
             data_payment=self.data_payment,
             card_number=self.card_number,
@@ -80,16 +80,4 @@ class Operation(Base):
             bonus_cashback=self.bonus_cashback,
             rounding_invest=self.rounding_invest,
             rounding_operation=self.rounding_operation,
-        )
-
-class Mytest(Base):
-    __tablename__ = "Mytest"
-
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[int]
-
-    def to_read_model(self) -> MytestSchema:
-        return MytestSchema(
-            id=self.id,
-            name=self.id,
         )
