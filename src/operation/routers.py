@@ -4,27 +4,35 @@ from fastapi import APIRouter, Depends
 from sqlalchemy import select, insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
-
 from src.database import get_async_session
 from src.operation.models import Operation
 from src.operation.schemas import OperationSchema
+
+from src.operation.utils import main as dict_operation
 
 router = APIRouter(
     prefix="/operation",
     tags=["Операции"]
 )
+
+
 @router.get("")
-async def get_operation(operation_type: int, session: Annotated[AsyncSession, Depends(get_async_session)]):
-    query = select(Operation).where(Operation.id == operation_type)
+async def get_operation(category: 'str',
+                        session: Annotated[AsyncSession, Depends(get_async_session)]):
+    query = select(Operation).where(Operation.category == category)
     result = await session.execute(query)
     result = [row[0].to_read_model() for row in result.all()]
     return result
+
+
 @router.post("")
-async def post_operation(new_operation: OperationSchema, session: Annotated[AsyncSession, Depends(get_async_session)]):
+async def post_operation(new_operation: OperationSchema,
+                         session: Annotated[AsyncSession, Depends(get_async_session)]):
     stmt = insert(Operation).values(**new_operation.model_dump())
     await session.execute(stmt)
     await session.commit()
     return {"status": "success"}
+
 
 new_operation_insert = {'id': 1,
                         'data_time_operation': 'string',
@@ -44,6 +52,7 @@ new_operation_insert = {'id': 1,
                         'rounding_operation': 0
                         }
 
+
 @router.post("/")
 async def post_operation_csv(session: Annotated[AsyncSession, Depends(get_async_session)]):
     stmt = insert(Operation).values(**new_operation_insert)
@@ -51,3 +60,17 @@ async def post_operation_csv(session: Annotated[AsyncSession, Depends(get_async_
     await session.execute(stmt)
     await session.commit()
     return {"status": "success"}
+
+@router.post("/d")
+async def post_operation_test(session: Annotated[AsyncSession, Depends(get_async_session)]):
+    URL = 'src/operation/operationsFiles/operations.csv'
+    get_dict_operation = dict_operation(URL)
+    for i in range(len(get_dict_operation)):
+        id_dict = {'id': i}
+        get_dict_operation[i] = get_dict_operation[i] | id_dict
+        print('[+] Итог: ', get_dict_operation[i], '\n')
+        stmt = insert(Operation).values(**get_dict_operation[i])
+        await session.execute(stmt)
+        await session.commit()
+    return {"status": "success"}
+

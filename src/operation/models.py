@@ -1,4 +1,4 @@
-from sqlalchemy import String, MetaData
+from sqlalchemy import MetaData
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -17,49 +17,49 @@ class Operation(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     # id операции.
 
-    data_time_operation: Mapped[str] = mapped_column(String(20))
+    data_time_operation: Mapped[str]
     # Дата и время операции не больше 20 символов. Пример "28.08.2023 14:55:28"
 
-    data_payment: Mapped[str] = mapped_column(String(10))
+    data_payment: Mapped[str]
     # Дата платежа не более 10. Пример "28.08.2023"
 
-    card_number: Mapped[str] = mapped_column(String(5))
+    card_number: Mapped[str]
     # Номер карты. Пример *0476
 
-    status_operation: Mapped[bool] = mapped_column(default=True)
+    status_operation: Mapped[str]
     # Статус операции. True|False. По умолчанию True. В файле "OK"
 
-    sum_operation: Mapped[str] = mapped_column(String(30))
+    sum_operation: Mapped[str]
     # Сумма операций. Ограничение на 30 символов.
 
-    currency_operation: Mapped[str] = mapped_column(String(10))
+    currency_operation: Mapped[str]
     # Валюта операции. Желательно сделать выборку.
 
-    sum_payment: Mapped[str] = mapped_column(String(30))
+    sum_payment: Mapped[str]
     # Сумма платежа. Ограничение на 30 символов.(неизвестно отличие платежа от операции)
 
-    currency_payment: Mapped[str] = mapped_column(String(10))
+    currency_payment: Mapped[str]
     # Валюта платежа. Желательно сделать выборку.
 
-    cashback: Mapped[int]
+    cashback: Mapped[str]
     # Кэшбэк. Целое число.
 
-    category: Mapped[str] = mapped_column(String(30))
+    category: Mapped[str]
     # Название категории
 
-    mss: Mapped[int]
+    mss: Mapped[str]
     # МСС всегда 4 цифры.
 
-    description: Mapped[str] = mapped_column(String(30))
+    description: Mapped[str]
     # Описание операции.
 
-    bonus_cashback: Mapped[str] = mapped_column(String(30))
+    bonus_cashback: Mapped[str]
     # Сумма бонусов (Включая кэшбэк).
 
-    rounding_invest: Mapped[str] = mapped_column(String(30))
+    rounding_invest: Mapped[str]
     # Округление на инвесткопилку
 
-    rounding_operation: Mapped[int]
+    rounding_operation: Mapped[str]
     # Сумма операции с округлением
 
     def to_read_model(self) -> OperationSchema:
