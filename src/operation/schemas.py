@@ -1,25 +1,37 @@
-from pydantic import BaseModel
+import decimal
+from datetime import datetime, date
+
+from pydantic import BaseModel, field_validator
+
 
 class OperationSchema(BaseModel):
-    id: int
-    data_time_operation: str
-    data_payment: str
+    id: int = None
+    data_time_operation: datetime
+    data_payment: date
     card_number: str
-    status_operation: str
-    sum_operation: str
+    status_operation: bool
+    sum_operation: decimal.Decimal
     currency_operation: str
-    sum_payment: str
+    sum_payment: decimal.Decimal
     currency_payment: str
-    cashback: str
+    cashback: int
     category: str
-    mss: str
+    mss: int
     description: str
-    bonus_cashback: str
-    rounding_invest: str
-    rounding_operation: str
+    bonus_cashback: decimal.Decimal
+    rounding_invest: decimal.Decimal
+    rounding_operation: decimal.Decimal
 
     class Config:
         from_attributes = True
+
+    @field_validator('mss','cashback', mode='plain')
+    @classmethod
+    def validator(cls, v):
+        if v == '':
+            return None
+        else:
+            return v
 
 
 key = [
