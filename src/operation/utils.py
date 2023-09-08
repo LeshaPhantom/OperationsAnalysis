@@ -55,6 +55,3 @@ def main(URL='operationsFiles/operations.csv'):
 
 if __name__ == '__main__':
     print(main())
-    fszdfh ll;jgh ksjzgk;kjfv
-    f
-
