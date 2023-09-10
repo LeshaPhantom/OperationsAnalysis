@@ -1,15 +1,15 @@
 import decimal
 from datetime import datetime, date
+from typing import Optional
 
 from pydantic import BaseModel, field_validator
 
 
 class OperationSchema(BaseModel):
-    id: int = None
     data_time_operation: datetime
     data_payment: date
     card_number: str
-    status_operation: bool
+    status_operation:  bool
     sum_operation: decimal.Decimal
     currency_operation: str
     sum_payment: decimal.Decimal
@@ -25,14 +25,12 @@ class OperationSchema(BaseModel):
     class Config:
         from_attributes = True
 
-    @field_validator('mss','cashback', mode='plain')
+    @field_validator('cashback', 'mss', mode='before')
     @classmethod
     def validator(cls, v):
         if v == '':
-            return None
-        else:
-            return v
-
+            return 0
+        return v
 
 key = [
         'data_time_operation',
