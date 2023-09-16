@@ -22,7 +22,12 @@ async def get_operation(ID_operation: int,
     query = select(Operation).where(Operation.id == ID_operation)
     result = await session.execute(query)
     result = [row[0].to_read_model() for row in result.all()]
-    return result
+    return {
+        "status": "success",
+        "data": result,
+        "details": None
+
+    }
 
 
 @router.post("")

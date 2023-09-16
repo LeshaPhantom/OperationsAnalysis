@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block head%}
+<script>
+        const searchForOperation = () => {
+        const searchInputValue = document.getElementById("operation_search").value;
+        window.location.href = `/pages/search/${searchInputValue}`;
+
+    }
+</script>
+{% endblock %}
+
+{% block content%}
+<div class="container square-box d-flex justify-content-center align-items-center" style="height: 1200px;">
+        <table class="table table-success table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Дата операции</th>
+      <th scope="col">Дата платежа</th>
+      <th scope="col">Номер карты</th>
+      <th scope="col">Статус</th>
+      <th scope="col">Сумма операции</th>
+      <th scope="col">Валюта операции</th>
+      <th scope="col">Сумма платежа</th>
+      <th scope="col">Валюта платежа</th>
+      <th scope="col">Кэшбэк</th>
+      <th scope="col">Категория</th>
+      <th scope="col">MCC</th>
+      <th scope="col">Описание</th>
+      <th scope="col">Бонусы (включая кэшбэк)</th>
+      <th scope="col">Округление на инвесткопилку</th>
+      <th scope="col">Сумма операции с округлением</th>
+    </tr>
+  </thead>
+
+  <tbody>
+   {% for operation in operations%}
+    <tr>
+      <td>{{ operation.card_number }}</td>
+      <td>{{ operation.data_payment }}</td>
+      <td>{{ operation.card_number }}</td>
+      <td>{{ operation.status_operation }}</td>
+      <td>{{ operation.sum_operation }}</td>
+      <td>{{ operation.currency_operation }}</td>
+      <td>{{ operation.sum_payment }}</td>
+      <td>{{ operation.currency_payment }}</td>
+      <td>{{ operation.cashback }}</td>
+      <td>{{ operation.category }}</td>
+      <td>{{ operation.mss }}</td>
+      <td>{{ operation.description }}</td>
+      <td>{{ operation.bonus_cashback }}</td>
+      <td>{{ operation.rounding_invest }}</td>
+      <td>{{ operation.rounding_operation }}</td>
+    </tr>
+  {% endfor%}
+  </tbody>
+
+</table>
+
+
+</div>
+{% endblock %}
+
